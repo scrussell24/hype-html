@@ -30,7 +30,7 @@ doc() == str(doc)
 ```
 ### Inner HTML
 
-Arguments passed in the element constructor are rendered using the str function and indented (if the element only has one argument it will not be idented.)
+Arguments passed in the element constructor are rendered using the str function and indented (if the element only has one argument it will not be indented.)
 
 ```
 body = Body(

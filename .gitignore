@@ -6,3 +6,7 @@ TODO.md
 .mypy_cahce/
 .pytest_cache/
 test.py
+dist/
+build/
+*.egg-info/
+scratch.txt
