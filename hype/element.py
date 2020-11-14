@@ -238,6 +238,7 @@ class Area(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         alt=None,
         autocapitalize=None,
@@ -498,6 +499,7 @@ class Base(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -732,6 +734,7 @@ class Br(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -1029,6 +1032,7 @@ class Col(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         align=None,
         autocapitalize=None,
@@ -1633,6 +1637,7 @@ class Embed(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -2341,6 +2346,7 @@ class Hr(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         align=None,
         autocapitalize=None,
@@ -2550,6 +2556,7 @@ class Img(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         align=None,
         alt=None,
@@ -2626,6 +2633,7 @@ class Input(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accept=None,
         accesskey=None,
         alt=None,
@@ -2969,6 +2977,7 @@ class Link(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -3258,6 +3267,7 @@ class Menuitem(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -3302,6 +3312,7 @@ class Meta(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         charset=None,
@@ -3811,6 +3822,7 @@ class Param(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -4623,6 +4635,7 @@ class Source(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -5571,6 +5584,7 @@ class Track(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,
@@ -5825,6 +5839,7 @@ class Wbr(SelfClosingElement):
 
     def __init__(
         self,
+        *args,
         accesskey=None,
         autocapitalize=None,
         _class=None,

@@ -1,4 +1,5 @@
 from hype.element import Element
+from hype.element import SelfClosingElement
 from hype.element import Doc
 from hype.element import Indent
 from hype.element import A

@@ -41,3 +41,13 @@ def test_underscore_attributes():
 
 def test_self_closing_tag():
     assert str(Hr()) == '\n<hr/>'
+
+
+def test_self_closing_tag_discard_inner_elements():
+    assert str(Hr('test')) == '\n<hr/>'
+
+
+def test_custom_self_closing_tag():
+    class Test(SelfClosingElement):
+        tag='test'
+    assert str(Test()) == '\n<test/>'

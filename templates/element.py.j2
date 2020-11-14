@@ -86,8 +86,8 @@ class {{ tag.capitalize() }}({% if not data.self_closing %}Element{% else %}Self
     tag = '{{ tag }}'
 {% if data.attrs|length > 0 %}
     def __init__(
-        self,{% if not data.self_closing %}
-        *args,{% endif %}{% for attr in data.attrs %}
+        self,
+        *args,{% for attr in data.attrs %}
         {{ attr }}=None,{% endfor %}
         **kwargs
     ):
