@@ -4,9 +4,13 @@ A minimal python dsl for generating html.
 
 ## Install
 
+Install via pip
+
 ```
 pip install hype-html
 ```
+
+Alteratively, in the spirit of removing dependencies, you could simply copy/paste the hype/element.py file into your project.
 
 ## Usage
 
@@ -80,7 +84,6 @@ print(span)
 
 # <span custom-attribute="custom">span</span>
 ```
-#### Self Closing Elements
 
 ### Custom Elements
 
