@@ -49,7 +49,7 @@ class Element:
         if self.self_closing:
             return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)} />'
         return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)}' + \
-            '>{"".join(els)}{end_tag_indent}</{self.tag}>'
+            f'>{"".join(els)}{end_tag_indent}</{self.tag}>'
 
     def __str__(self):
         return self()
