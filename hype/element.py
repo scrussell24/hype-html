@@ -34,19 +34,22 @@ class Element:
 
         # indent
         indent_chars = '\n' + ''.join([indent.value for n in range(indent_level)])
-        end_tag_indent = indent_chars if any([True for el in self.inner_elements if isinstance(el, Element)]) else ''
+        end_tag_indent = indent_chars if any(
+            [True for el in self.inner_elements if isinstance(el, Element)]
+        ) else ''
 
         # elements
         els = []
         for a in self.inner_elements:
             if isinstance(a, Element):
-                els.append(a(indent_level=indent_level+1, indent=indent))
+                els.append(a(indent_level=indent_level + 1, indent=indent))
             else:
                 els.append(str(a))
 
         if self.self_closing:
             return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)} />'
-        return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)}>{"".join(els)}{end_tag_indent}</{self.tag}>'
+        return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)}' + \
+            '>{"".join(els)}{end_tag_indent}</{self.tag}>'
 
     def __str__(self):
         return self()
@@ -69,7 +72,7 @@ class Doc:
         for el in self.elements:
             if isinstance(el, Element):
                 doc += el(indent=self.indent)
-            else:    
+            else:
                 doc += str(el)
         return doc
 
@@ -81,7 +84,7 @@ class Doc:
 
 class A(Element):
     tag = 'a'
-    
+
     def __init__(
         self,
         *args,
@@ -111,7 +114,7 @@ class A(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -138,11 +141,11 @@ class A(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Abbr(Element):
     tag = 'abbr'
-    
+
     def __init__(
         self,
         *args,
@@ -164,7 +167,7 @@ class Abbr(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -183,11 +186,11 @@ class Abbr(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Address(Element):
     tag = 'address'
-    
+
     def __init__(
         self,
         *args,
@@ -209,7 +212,7 @@ class Address(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -228,11 +231,11 @@ class Address(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Area(SelfClosingElement):
     tag = 'area'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -263,7 +266,7 @@ class Area(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "alt": alt,
             "autocapitalize": autocapitalize,
@@ -292,11 +295,11 @@ class Area(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Article(Element):
     tag = 'article'
-    
+
     def __init__(
         self,
         *args,
@@ -318,7 +321,7 @@ class Article(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -337,11 +340,11 @@ class Article(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Aside(Element):
     tag = 'aside'
-    
+
     def __init__(
         self,
         *args,
@@ -363,7 +366,7 @@ class Aside(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -382,11 +385,11 @@ class Aside(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Audio(Element):
     tag = 'audio'
-    
+
     def __init__(
         self,
         *args,
@@ -416,7 +419,7 @@ class Audio(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "autoplay": autoplay,
@@ -443,11 +446,11 @@ class Audio(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class B(Element):
     tag = 'b'
-    
+
     def __init__(
         self,
         *args,
@@ -469,7 +472,7 @@ class B(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -488,11 +491,11 @@ class B(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Base(SelfClosingElement):
     tag = 'base'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -515,7 +518,7 @@ class Base(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -536,11 +539,11 @@ class Base(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Bdi(Element):
     tag = 'bdi'
-    
+
     def __init__(
         self,
         *args,
@@ -562,7 +565,7 @@ class Bdi(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -581,11 +584,11 @@ class Bdi(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Bdo(Element):
     tag = 'bdo'
-    
+
     def __init__(
         self,
         *args,
@@ -607,7 +610,7 @@ class Bdo(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -626,11 +629,11 @@ class Bdo(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Blockquote(Element):
     tag = 'blockquote'
-    
+
     def __init__(
         self,
         *args,
@@ -653,7 +656,7 @@ class Blockquote(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "cite": cite,
@@ -673,11 +676,11 @@ class Blockquote(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Body(Element):
     tag = 'body'
-    
+
     def __init__(
         self,
         *args,
@@ -701,7 +704,7 @@ class Body(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "background": background,
@@ -722,11 +725,11 @@ class Body(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Br(SelfClosingElement):
     tag = 'br'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -747,7 +750,7 @@ class Br(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -766,11 +769,11 @@ class Br(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Button(Element):
     tag = 'button'
-    
+
     def __init__(
         self,
         *args,
@@ -803,7 +806,7 @@ class Button(Element):
         value=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "autofocus": autofocus,
@@ -833,11 +836,11 @@ class Button(Element):
             "value": value,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Canvas(Element):
     tag = 'canvas'
-    
+
     def __init__(
         self,
         *args,
@@ -861,7 +864,7 @@ class Canvas(Element):
         width=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -882,11 +885,11 @@ class Canvas(Element):
             "width": width,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Caption(Element):
     tag = 'caption'
-    
+
     def __init__(
         self,
         *args,
@@ -909,7 +912,7 @@ class Caption(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -929,11 +932,11 @@ class Caption(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Cite(Element):
     tag = 'cite'
-    
+
     def __init__(
         self,
         *args,
@@ -955,7 +958,7 @@ class Cite(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -974,11 +977,11 @@ class Cite(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Code(Element):
     tag = 'code'
-    
+
     def __init__(
         self,
         *args,
@@ -1000,7 +1003,7 @@ class Code(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1019,11 +1022,11 @@ class Code(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Col(SelfClosingElement):
     tag = 'col'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -1047,7 +1050,7 @@ class Col(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -1069,11 +1072,11 @@ class Col(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Colgroup(Element):
     tag = 'colgroup'
-    
+
     def __init__(
         self,
         *args,
@@ -1098,7 +1101,7 @@ class Colgroup(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -1120,11 +1123,11 @@ class Colgroup(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Data(Element):
     tag = 'data'
-    
+
     def __init__(
         self,
         *args,
@@ -1147,7 +1150,7 @@ class Data(Element):
         value=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1167,11 +1170,11 @@ class Data(Element):
             "value": value,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Datalist(Element):
     tag = 'datalist'
-    
+
     def __init__(
         self,
         *args,
@@ -1193,7 +1196,7 @@ class Datalist(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1212,11 +1215,11 @@ class Datalist(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Dd(Element):
     tag = 'dd'
-    
+
     def __init__(
         self,
         *args,
@@ -1238,7 +1241,7 @@ class Dd(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1257,11 +1260,11 @@ class Dd(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Del(Element):
     tag = 'del'
-    
+
     def __init__(
         self,
         *args,
@@ -1285,7 +1288,7 @@ class Del(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "cite": cite,
@@ -1306,11 +1309,11 @@ class Del(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Details(Element):
     tag = 'details'
-    
+
     def __init__(
         self,
         *args,
@@ -1333,7 +1336,7 @@ class Details(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1353,11 +1356,11 @@ class Details(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Dfn(Element):
     tag = 'dfn'
-    
+
     def __init__(
         self,
         *args,
@@ -1379,7 +1382,7 @@ class Dfn(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1398,11 +1401,11 @@ class Dfn(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Dialog(Element):
     tag = 'dialog'
-    
+
     def __init__(
         self,
         *args,
@@ -1424,7 +1427,7 @@ class Dialog(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1443,11 +1446,11 @@ class Dialog(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Div(Element):
     tag = 'div'
-    
+
     def __init__(
         self,
         *args,
@@ -1469,7 +1472,7 @@ class Div(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1488,11 +1491,11 @@ class Div(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Dl(Element):
     tag = 'dl'
-    
+
     def __init__(
         self,
         *args,
@@ -1514,7 +1517,7 @@ class Dl(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1533,11 +1536,11 @@ class Dl(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Dt(Element):
     tag = 'dt'
-    
+
     def __init__(
         self,
         *args,
@@ -1559,7 +1562,7 @@ class Dt(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1578,11 +1581,11 @@ class Dt(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Em(Element):
     tag = 'em'
-    
+
     def __init__(
         self,
         *args,
@@ -1604,7 +1607,7 @@ class Em(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1623,11 +1626,11 @@ class Em(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Embed(SelfClosingElement):
     tag = 'embed'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -1652,7 +1655,7 @@ class Embed(SelfClosingElement):
         width=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1675,11 +1678,11 @@ class Embed(SelfClosingElement):
             "width": width,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Fieldset(Element):
     tag = 'fieldset'
-    
+
     def __init__(
         self,
         *args,
@@ -1704,7 +1707,7 @@ class Fieldset(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1726,11 +1729,11 @@ class Fieldset(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Figcaption(Element):
     tag = 'figcaption'
-    
+
     def __init__(
         self,
         *args,
@@ -1752,7 +1755,7 @@ class Figcaption(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1771,11 +1774,11 @@ class Figcaption(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Figure(Element):
     tag = 'figure'
-    
+
     def __init__(
         self,
         *args,
@@ -1797,7 +1800,7 @@ class Figure(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1816,11 +1819,11 @@ class Figure(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Footer(Element):
     tag = 'footer'
-    
+
     def __init__(
         self,
         *args,
@@ -1842,7 +1845,7 @@ class Footer(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1861,11 +1864,11 @@ class Footer(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Form(Element):
     tag = 'form'
-    
+
     def __init__(
         self,
         *args,
@@ -1897,7 +1900,7 @@ class Form(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accept": accept,
             "accept_charset": accept_charset,
             "accesskey": accesskey,
@@ -1926,11 +1929,11 @@ class Form(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class H1(Element):
     tag = 'h1'
-    
+
     def __init__(
         self,
         *args,
@@ -1952,7 +1955,7 @@ class H1(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -1971,11 +1974,11 @@ class H1(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class H2(Element):
     tag = 'h2'
-    
+
     def __init__(
         self,
         *args,
@@ -1997,7 +2000,7 @@ class H2(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2016,11 +2019,11 @@ class H2(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class H3(Element):
     tag = 'h3'
-    
+
     def __init__(
         self,
         *args,
@@ -2042,7 +2045,7 @@ class H3(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2061,11 +2064,11 @@ class H3(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class H4(Element):
     tag = 'h4'
-    
+
     def __init__(
         self,
         *args,
@@ -2087,7 +2090,7 @@ class H4(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2106,11 +2109,11 @@ class H4(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class H5(Element):
     tag = 'h5'
-    
+
     def __init__(
         self,
         *args,
@@ -2132,7 +2135,7 @@ class H5(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2151,11 +2154,11 @@ class H5(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class H6(Element):
     tag = 'h6'
-    
+
     def __init__(
         self,
         *args,
@@ -2177,7 +2180,7 @@ class H6(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2196,11 +2199,11 @@ class H6(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Head(Element):
     tag = 'head'
-    
+
     def __init__(
         self,
         *args,
@@ -2222,7 +2225,7 @@ class Head(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2241,11 +2244,11 @@ class Head(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Header(Element):
     tag = 'header'
-    
+
     def __init__(
         self,
         *args,
@@ -2267,7 +2270,7 @@ class Header(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2286,11 +2289,11 @@ class Header(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Hgroup(Element):
     tag = 'hgroup'
-    
+
     def __init__(
         self,
         *args,
@@ -2312,7 +2315,7 @@ class Hgroup(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2331,11 +2334,11 @@ class Hgroup(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Hr(SelfClosingElement):
     tag = 'hr'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -2358,7 +2361,7 @@ class Hr(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -2379,11 +2382,11 @@ class Hr(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Html(Element):
     tag = 'html'
-    
+
     def __init__(
         self,
         *args,
@@ -2406,7 +2409,7 @@ class Html(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2426,11 +2429,11 @@ class Html(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class I(Element):
     tag = 'i'
-    
+
     def __init__(
         self,
         *args,
@@ -2452,7 +2455,7 @@ class I(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2471,11 +2474,11 @@ class I(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Iframe(Element):
     tag = 'iframe'
-    
+
     def __init__(
         self,
         *args,
@@ -2509,7 +2512,7 @@ class Iframe(Element):
         width=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "allow": allow,
@@ -2540,11 +2543,11 @@ class Iframe(Element):
             "width": width,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Img(SelfClosingElement):
     tag = 'img'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -2581,7 +2584,7 @@ class Img(SelfClosingElement):
         width=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "alt": alt,
@@ -2616,11 +2619,11 @@ class Img(SelfClosingElement):
             "width": width,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Input(SelfClosingElement):
     tag = 'input'
-    
+
     def __init__(
         self,
         accept=None,
@@ -2673,7 +2676,7 @@ class Input(SelfClosingElement):
         width=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accept": accept,
             "accesskey": accesskey,
             "alt": alt,
@@ -2724,11 +2727,11 @@ class Input(SelfClosingElement):
             "width": width,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Ins(Element):
     tag = 'ins'
-    
+
     def __init__(
         self,
         *args,
@@ -2752,7 +2755,7 @@ class Ins(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "cite": cite,
@@ -2773,11 +2776,11 @@ class Ins(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Kbd(Element):
     tag = 'kbd'
-    
+
     def __init__(
         self,
         *args,
@@ -2799,7 +2802,7 @@ class Kbd(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2818,11 +2821,11 @@ class Kbd(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Label(Element):
     tag = 'label'
-    
+
     def __init__(
         self,
         *args,
@@ -2846,7 +2849,7 @@ class Label(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2867,11 +2870,11 @@ class Label(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Legend(Element):
     tag = 'legend'
-    
+
     def __init__(
         self,
         *args,
@@ -2893,7 +2896,7 @@ class Legend(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2912,11 +2915,11 @@ class Legend(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Li(Element):
     tag = 'li'
-    
+
     def __init__(
         self,
         *args,
@@ -2939,7 +2942,7 @@ class Li(Element):
         value=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -2959,11 +2962,11 @@ class Li(Element):
             "value": value,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Link(SelfClosingElement):
     tag = 'link'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -2992,7 +2995,7 @@ class Link(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3019,11 +3022,11 @@ class Link(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Main(Element):
     tag = 'main'
-    
+
     def __init__(
         self,
         *args,
@@ -3045,7 +3048,7 @@ class Main(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3064,11 +3067,11 @@ class Main(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Map(Element):
     tag = 'map'
-    
+
     def __init__(
         self,
         *args,
@@ -3091,7 +3094,7 @@ class Map(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3111,11 +3114,11 @@ class Map(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Mark(Element):
     tag = 'mark'
-    
+
     def __init__(
         self,
         *args,
@@ -3137,7 +3140,7 @@ class Mark(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3156,11 +3159,11 @@ class Mark(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Math(Element):
     tag = 'math'
-    
+
     def __init__(
         self,
         *args,
@@ -3182,7 +3185,7 @@ class Math(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3201,11 +3204,11 @@ class Math(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Menu(Element):
     tag = 'menu'
-    
+
     def __init__(
         self,
         *args,
@@ -3228,7 +3231,7 @@ class Menu(Element):
         type=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3248,11 +3251,11 @@ class Menu(Element):
             "type": type,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Menuitem(SelfClosingElement):
     tag = 'menuitem'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -3273,7 +3276,7 @@ class Menuitem(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3292,11 +3295,11 @@ class Menuitem(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Meta(SelfClosingElement):
     tag = 'meta'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -3321,7 +3324,7 @@ class Meta(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "charset": charset,
@@ -3344,11 +3347,11 @@ class Meta(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Meter(Element):
     tag = 'meter'
-    
+
     def __init__(
         self,
         *args,
@@ -3377,7 +3380,7 @@ class Meter(Element):
         value=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3403,11 +3406,11 @@ class Meter(Element):
             "value": value,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Nav(Element):
     tag = 'nav'
-    
+
     def __init__(
         self,
         *args,
@@ -3429,7 +3432,7 @@ class Nav(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3448,11 +3451,11 @@ class Nav(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Noscript(Element):
     tag = 'noscript'
-    
+
     def __init__(
         self,
         *args,
@@ -3474,7 +3477,7 @@ class Noscript(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3493,11 +3496,11 @@ class Noscript(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Object(Element):
     tag = 'object'
-    
+
     def __init__(
         self,
         *args,
@@ -3527,7 +3530,7 @@ class Object(Element):
         width=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "border": border,
@@ -3554,11 +3557,11 @@ class Object(Element):
             "width": width,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Ol(Element):
     tag = 'ol'
-    
+
     def __init__(
         self,
         *args,
@@ -3582,7 +3585,7 @@ class Ol(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3603,11 +3606,11 @@ class Ol(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Optgroup(Element):
     tag = 'optgroup'
-    
+
     def __init__(
         self,
         *args,
@@ -3631,7 +3634,7 @@ class Optgroup(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3652,11 +3655,11 @@ class Optgroup(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Option(Element):
     tag = 'option'
-    
+
     def __init__(
         self,
         *args,
@@ -3682,7 +3685,7 @@ class Option(Element):
         value=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3705,11 +3708,11 @@ class Option(Element):
             "value": value,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Output(Element):
     tag = 'output'
-    
+
     def __init__(
         self,
         *args,
@@ -3734,7 +3737,7 @@ class Output(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3756,11 +3759,11 @@ class Output(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class P(Element):
     tag = 'p'
-    
+
     def __init__(
         self,
         *args,
@@ -3782,7 +3785,7 @@ class P(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3801,11 +3804,11 @@ class P(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Param(SelfClosingElement):
     tag = 'param'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -3828,7 +3831,7 @@ class Param(SelfClosingElement):
         value=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3849,11 +3852,11 @@ class Param(SelfClosingElement):
             "value": value,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Picture(Element):
     tag = 'picture'
-    
+
     def __init__(
         self,
         *args,
@@ -3875,7 +3878,7 @@ class Picture(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3894,11 +3897,11 @@ class Picture(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Pre(Element):
     tag = 'pre'
-    
+
     def __init__(
         self,
         *args,
@@ -3920,7 +3923,7 @@ class Pre(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3939,11 +3942,11 @@ class Pre(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Progress(Element):
     tag = 'progress'
-    
+
     def __init__(
         self,
         *args,
@@ -3968,7 +3971,7 @@ class Progress(Element):
         value=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -3990,11 +3993,11 @@ class Progress(Element):
             "value": value,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Q(Element):
     tag = 'q'
-    
+
     def __init__(
         self,
         *args,
@@ -4017,7 +4020,7 @@ class Q(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "cite": cite,
@@ -4037,11 +4040,11 @@ class Q(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Rb(Element):
     tag = 'rb'
-    
+
     def __init__(
         self,
         *args,
@@ -4063,7 +4066,7 @@ class Rb(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4082,11 +4085,11 @@ class Rb(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Rp(Element):
     tag = 'rp'
-    
+
     def __init__(
         self,
         *args,
@@ -4108,7 +4111,7 @@ class Rp(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4127,11 +4130,11 @@ class Rp(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Rt(Element):
     tag = 'rt'
-    
+
     def __init__(
         self,
         *args,
@@ -4153,7 +4156,7 @@ class Rt(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4172,11 +4175,11 @@ class Rt(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Rtc(Element):
     tag = 'rtc'
-    
+
     def __init__(
         self,
         *args,
@@ -4198,7 +4201,7 @@ class Rtc(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4217,11 +4220,11 @@ class Rtc(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Ruby(Element):
     tag = 'ruby'
-    
+
     def __init__(
         self,
         *args,
@@ -4243,7 +4246,7 @@ class Ruby(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4262,11 +4265,11 @@ class Ruby(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class S(Element):
     tag = 's'
-    
+
     def __init__(
         self,
         *args,
@@ -4288,7 +4291,7 @@ class S(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4307,11 +4310,11 @@ class S(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Samp(Element):
     tag = 'samp'
-    
+
     def __init__(
         self,
         *args,
@@ -4333,7 +4336,7 @@ class Samp(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4352,11 +4355,11 @@ class Samp(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Script(Element):
     tag = 'script'
-    
+
     def __init__(
         self,
         *args,
@@ -4388,7 +4391,7 @@ class Script(Element):
         type=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "_async": _async,
             "autocapitalize": autocapitalize,
@@ -4417,11 +4420,11 @@ class Script(Element):
             "type": type,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Section(Element):
     tag = 'section'
-    
+
     def __init__(
         self,
         *args,
@@ -4443,7 +4446,7 @@ class Section(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4462,11 +4465,11 @@ class Section(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Select(Element):
     tag = 'select'
-    
+
     def __init__(
         self,
         *args,
@@ -4496,7 +4499,7 @@ class Select(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "autocomplete": autocomplete,
@@ -4523,11 +4526,11 @@ class Select(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Slot(Element):
     tag = 'slot'
-    
+
     def __init__(
         self,
         *args,
@@ -4549,7 +4552,7 @@ class Slot(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4568,11 +4571,11 @@ class Slot(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Small(Element):
     tag = 'small'
-    
+
     def __init__(
         self,
         *args,
@@ -4594,7 +4597,7 @@ class Small(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4613,11 +4616,11 @@ class Small(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Source(SelfClosingElement):
     tag = 'source'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -4642,7 +4645,7 @@ class Source(SelfClosingElement):
         type=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4665,11 +4668,11 @@ class Source(SelfClosingElement):
             "type": type,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class Span(Element):
     tag = 'span'
-    
+
     def __init__(
         self,
         *args,
@@ -4691,7 +4694,7 @@ class Span(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4710,11 +4713,11 @@ class Span(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Strong(Element):
     tag = 'strong'
-    
+
     def __init__(
         self,
         *args,
@@ -4736,7 +4739,7 @@ class Strong(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4755,11 +4758,11 @@ class Strong(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Style(Element):
     tag = 'style'
-    
+
     def __init__(
         self,
         *args,
@@ -4783,7 +4786,7 @@ class Style(Element):
         type=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4804,11 +4807,11 @@ class Style(Element):
             "type": type,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Sub(Element):
     tag = 'sub'
-    
+
     def __init__(
         self,
         *args,
@@ -4830,7 +4833,7 @@ class Sub(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4849,11 +4852,11 @@ class Sub(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Summary(Element):
     tag = 'summary'
-    
+
     def __init__(
         self,
         *args,
@@ -4875,7 +4878,7 @@ class Summary(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4894,11 +4897,11 @@ class Summary(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Sup(Element):
     tag = 'sup'
-    
+
     def __init__(
         self,
         *args,
@@ -4920,7 +4923,7 @@ class Sup(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4939,11 +4942,11 @@ class Sup(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Svg(Element):
     tag = 'svg'
-    
+
     def __init__(
         self,
         *args,
@@ -4965,7 +4968,7 @@ class Svg(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -4984,11 +4987,11 @@ class Svg(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Table(Element):
     tag = 'table'
-    
+
     def __init__(
         self,
         *args,
@@ -5015,7 +5018,7 @@ class Table(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -5039,11 +5042,11 @@ class Table(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Tbody(Element):
     tag = 'tbody'
-    
+
     def __init__(
         self,
         *args,
@@ -5067,7 +5070,7 @@ class Tbody(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -5088,11 +5091,11 @@ class Tbody(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Td(Element):
     tag = 'td'
-    
+
     def __init__(
         self,
         *args,
@@ -5120,7 +5123,7 @@ class Td(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -5145,11 +5148,11 @@ class Td(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Template(Element):
     tag = 'template'
-    
+
     def __init__(
         self,
         *args,
@@ -5171,7 +5174,7 @@ class Template(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5190,11 +5193,11 @@ class Template(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Textarea(Element):
     tag = 'textarea'
-    
+
     def __init__(
         self,
         *args,
@@ -5231,7 +5234,7 @@ class Textarea(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "autocomplete": autocomplete,
@@ -5265,11 +5268,11 @@ class Textarea(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Tfoot(Element):
     tag = 'tfoot'
-    
+
     def __init__(
         self,
         *args,
@@ -5293,7 +5296,7 @@ class Tfoot(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -5314,11 +5317,11 @@ class Tfoot(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Th(Element):
     tag = 'th'
-    
+
     def __init__(
         self,
         *args,
@@ -5347,7 +5350,7 @@ class Th(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -5373,11 +5376,11 @@ class Th(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Thead(Element):
     tag = 'thead'
-    
+
     def __init__(
         self,
         *args,
@@ -5400,7 +5403,7 @@ class Thead(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -5420,11 +5423,11 @@ class Thead(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Time(Element):
     tag = 'time'
-    
+
     def __init__(
         self,
         *args,
@@ -5447,7 +5450,7 @@ class Time(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5467,11 +5470,11 @@ class Time(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Title(Element):
     tag = 'title'
-    
+
     def __init__(
         self,
         *args,
@@ -5493,7 +5496,7 @@ class Title(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5512,11 +5515,11 @@ class Title(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Tr(Element):
     tag = 'tr'
-    
+
     def __init__(
         self,
         *args,
@@ -5540,7 +5543,7 @@ class Tr(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "align": align,
             "autocapitalize": autocapitalize,
@@ -5561,11 +5564,11 @@ class Tr(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Track(SelfClosingElement):
     tag = 'track'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -5591,7 +5594,7 @@ class Track(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5615,11 +5618,11 @@ class Track(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+
 
 class U(Element):
     tag = 'u'
-    
+
     def __init__(
         self,
         *args,
@@ -5641,7 +5644,7 @@ class U(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5660,11 +5663,11 @@ class U(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Ul(Element):
     tag = 'ul'
-    
+
     def __init__(
         self,
         *args,
@@ -5686,7 +5689,7 @@ class Ul(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5705,11 +5708,11 @@ class Ul(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Var(Element):
     tag = 'var'
-    
+
     def __init__(
         self,
         *args,
@@ -5731,7 +5734,7 @@ class Var(Element):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5750,11 +5753,11 @@ class Var(Element):
             "translate": translate,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Video(Element):
     tag = 'video'
-    
+
     def __init__(
         self,
         *args,
@@ -5786,7 +5789,7 @@ class Video(Element):
         width=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "autoplay": autoplay,
@@ -5815,11 +5818,11 @@ class Video(Element):
             "width": width,
         }
         super().__init__(*args, **{**props, **kwargs})
-    
+
 
 class Wbr(SelfClosingElement):
     tag = 'wbr'
-    
+
     def __init__(
         self,
         accesskey=None,
@@ -5840,7 +5843,7 @@ class Wbr(SelfClosingElement):
         translate=None,
         **kwargs
     ):
-        props = { 
+        props = {
             "accesskey": accesskey,
             "autocapitalize": autocapitalize,
             "_class": _class,
@@ -5859,4 +5862,4 @@ class Wbr(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-    
+

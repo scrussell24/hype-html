@@ -34,19 +34,22 @@ class Element:
 
         # indent
         indent_chars = '\n' + ''.join([indent.value for n in range(indent_level)])
-        end_tag_indent = indent_chars if any([True for el in self.inner_elements if isinstance(el, Element)]) else ''
+        end_tag_indent = indent_chars if any(
+            [True for el in self.inner_elements if isinstance(el, Element)]
+        ) else ''
 
         # elements
         els = []
         for a in self.inner_elements:
             if isinstance(a, Element):
-                els.append(a(indent_level=indent_level+1, indent=indent))
+                els.append(a(indent_level=indent_level + 1, indent=indent))
             else:
                 els.append(str(a))
 
         if self.self_closing:
             return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)} />'
-        return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)}>{"".join(els)}{end_tag_indent}</{self.tag}>'
+        return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)}' + \
+            '>{"".join(els)}{end_tag_indent}</{self.tag}>'
 
     def __str__(self):
         return self()
@@ -69,7 +72,7 @@ class Doc:
         for el in self.elements:
             if isinstance(el, Element):
                 doc += el(indent=self.indent)
-            else:    
+            else:
                 doc += str(el)
         return doc
 
@@ -81,16 +84,16 @@ class Doc:
 {% for tag, data in tags.items() %}
 class {{ tag.capitalize() }}({% if not data.self_closing %}Element{% else %}SelfClosingElement{% endif %}):
     tag = '{{ tag }}'
-    {% if data.attrs|length > 0 %}
+{% if data.attrs|length > 0 %}
     def __init__(
         self,{% if not data.self_closing %}
         *args,{% endif %}{% for attr in data.attrs %}
         {{ attr }}=None,{% endfor %}
         **kwargs
     ):
-        props = { {% for attr in data.attrs %}
-            "{{ attr }}": {{ attr }},{% endfor %}
-        }
+        props = {
+{% for attr in data.attrs %}            "{{ attr }}": {{ attr }},
+{% endfor %}        }
         super().__init__({% if not data.self_closing %}*args, {% endif %}**{**props, **kwargs})
-    {% endif %}
+{% endif %}
 {% endfor %}

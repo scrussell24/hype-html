@@ -2,3 +2,6 @@ env/
 .vs_code/
 *.pyc
 TODO.md
+.coverage
+.mypy_cahce/
+.pytest_cache/
