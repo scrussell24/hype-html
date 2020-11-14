@@ -51,3 +51,7 @@ def test_custom_self_closing_tag():
     class Test(SelfClosingElement):
         tag='test'
     assert str(Test()) == '\n<test/>'
+
+
+def test_other_indent():
+    assert Div(H1('Hello World'))(indent=Indent.TAB) == '\n<div>\n\t<h1>Hello World</h1>\n</div>'
