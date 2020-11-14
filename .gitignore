@@ -5,3 +5,4 @@ TODO.md
 .coverage
 .mypy_cahce/
 .pytest_cache/
+test.py
