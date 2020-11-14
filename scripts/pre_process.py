@@ -11,14 +11,14 @@ def generate():
         template = f.read()
     tmp = Template(template)
     code = tmp.render(tags=tags)
-    with open('element.py', 'w') as f:
+    with open('hype/element.py', 'w') as f:
         f.write(code)
 
     with open('templates/__init__.py.j2', 'r') as f:
         template = f.read()
     tmp = Template(template)
     code = tmp.render(tags=tags)
-    with open('__init__.py', 'w') as f:
+    with open('hype/__init__.py', 'w') as f:
         f.write(code)
 
 
