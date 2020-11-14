@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name="hype-html",
-    version="0.0.3",
+    version="0.0.4",
     author="Scott Russell",
     author_email="me@scottrussell.net",
     description="A minimal python dsl for generating html.",
