@@ -11,7 +11,7 @@ setuptools.setup(
     description="A minimal python dsl for generating html.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/scrussell24/hype-html",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
