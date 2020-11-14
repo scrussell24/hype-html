@@ -7,10 +7,9 @@ def test_element():
         tag='test'
 
     test = Test(4)
-    assert str(test) == '\ntest'
+    assert str(test) == '\n<test>4</test>'
 
 
 def test_div():
     div = Div(4)
     assert str(div) == '\n<div>4</div>'
-
