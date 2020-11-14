@@ -5,7 +5,7 @@ A minimal python dsl for generating html.
 ## Install
 
 ```
-pip install hype
+pip install hype-html
 ```
 
 ## Usage
