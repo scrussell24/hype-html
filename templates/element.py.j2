@@ -47,7 +47,7 @@ class Element:
                 els.append(str(a))
 
         if self.self_closing:
-            return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)} />'
+            return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)}/>'
         return f'{indent_chars}<{self.tag}{prop_space}{" ".join(props)}' + \
             f'>{"".join(els)}{end_tag_indent}</{self.tag}>'
 
