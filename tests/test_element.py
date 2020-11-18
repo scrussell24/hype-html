@@ -66,3 +66,11 @@ def test_other_indent():
 # def test_boolean_attribute_true():
 #     div = Div('content', test=True)
 #     assert str(div) == '\n<div>content</div>'
+
+
+def test_add_element():
+    assert False
+
+
+# def test_add_attribute():
+#     assert False
