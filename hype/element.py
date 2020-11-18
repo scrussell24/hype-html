@@ -1,5 +1,26 @@
+# Copyright (c) <2020> <Scott Russell>
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Documentation available at https://github.com/scrussell24/hype-html
+
 import enum
-import json
 
 
 class Indent(enum.Enum):
@@ -19,13 +40,26 @@ class Element:
         if self.self_closing and len(args):
             raise RuntimeError('Self closing elements cannot have inner elements.')
 
-        self.inner_elements = args
+        self.inner_elements = list(args)
         self.props = {}
         for k, v in kwargs.items():
-            if k.startswith('_'):
-                k = k[1:]
-            k = k.replace('_', '-')
-            self.props[k] = v
+            key, val = self._process_attr(k, v)
+            self.props[key] = val
+
+    @staticmethod
+    def _process_attr(k, v):
+        if k.startswith('_'):
+            k = k[1:]
+        k = k.replace('_', '-')
+        return k, v
+
+    def append(self, el):
+        self.inner_elements.append(el)
+
+    def attrs(self, **kwargs):
+        for k, v in kwargs.items():
+            key, val = self._process_attr(k, v)
+            self.props[key] = val
 
     def __call__(self, indent_level=0, indent=Indent.TWO_SPACES):
         # props

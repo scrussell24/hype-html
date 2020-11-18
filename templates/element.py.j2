@@ -40,13 +40,26 @@ class Element:
         if self.self_closing and len(args):
             raise RuntimeError('Self closing elements cannot have inner elements.')
 
-        self.inner_elements = args
+        self.inner_elements = list(args)
         self.props = {}
         for k, v in kwargs.items():
-            if k.startswith('_'):
-                k = k[1:]
-            k = k.replace('_', '-')
-            self.props[k] = v
+            key, val = self._process_attr(k, v)
+            self.props[key] = val
+
+    @staticmethod
+    def _process_attr(k, v):
+        if k.startswith('_'):
+            k = k[1:]
+        k = k.replace('_', '-')
+        return k, v
+
+    def append(self, el):
+        self.inner_elements.append(el)
+
+    def attrs(self, **kwargs):
+        for k, v in kwargs.items():
+            key, val = self._process_attr(k, v)
+            self.props[key] = val
 
     def __call__(self, indent_level=0, indent=Indent.TWO_SPACES):
         # props

@@ -69,8 +69,12 @@ def test_other_indent():
 
 
 def test_add_element():
-    assert False
+    div = Div('content')
+    div.append(P('test'))
+    assert str(div) == '\n<div>content\n  <p>test</p>\n</div>'
 
 
-# def test_add_attribute():
-#     assert False
+def test_add_attribute():
+    div = Div('content')
+    div.attrs(test='test')
+    assert str(div) == '\n<div test="test">content</div>'
