@@ -58,14 +58,14 @@ def test_other_indent():
     assert str(Doc(Div(H1('Hello World')), indent=Indent.TAB)) == '<!DOCTYPE html>\n<div>\n\t<h1>Hello World</h1>\n</div>'
 
 
-# def test_boolean_attribute_false():
-#     div = Div('content', test=False)
-#     assert str(div) == '\n<div>content</div>'
+def test_boolean_attribute_false():
+    div = Div('content', test=False)
+    assert str(div) == '\n<div>content</div>'
 
 
-# def test_boolean_attribute_true():
-#     div = Div('content', test=True)
-#     assert str(div) == '\n<div>content</div>'
+def test_boolean_attribute_true():
+    div = Div('content', test=True)
+    assert str(div) == '\n<div test>content</div>'
 
 
 def test_add_element():

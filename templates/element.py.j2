@@ -53,6 +53,14 @@ class Element:
         k = k.replace('_', '-')
         return k, v
 
+    @staticmethod
+    def _create_attr_string(k, v):
+        if v is True:
+            return k
+        elif v:
+            return f'{k}="{v}"'
+        return None
+
     def append(self, el):
         self.inner_elements.append(el)
 
@@ -63,7 +71,8 @@ class Element:
 
     def __call__(self, indent_level=0, indent=Indent.TWO_SPACES):
         # props
-        props = [f'{k}="{v}"' for k, v in self.props.items() if v is not None]
+        props = [self._create_attr_string(k, v) for k, v in self.props.items() if v is not None]
+        props = [p for p in props if p]
         prop_space = ' ' if len(props) else ''
 
         # indent
