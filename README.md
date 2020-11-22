@@ -53,6 +53,26 @@ print(body)
 # </body>
 ```
 
+Append to an elementes list of inner html elements.
+
+```
+body = Body(
+    H1('Hello World'),
+    P('This is a paragraph'),
+    'Just a string'
+)
+
+body.append(P('Another paragraph'))
+
+print(body)
+
+# <body>
+#   <h1>Hello World</h1>
+#   <p>This is a paragraph</p>Just a string
+#   <p>Another paragraph</p>
+# </body>
+```
+
 ### Attributes
 
 Attributes are passed as keyword arguments to the element's constructor.
@@ -83,6 +103,17 @@ span = Span('span', custom_attrbiute='custom')
 print(span)
 
 # <span custom-attribute="custom">span</span>
+```
+
+Also add attributes using a method's attrs method add keyword arguments.
+
+```
+span = Span('span')
+span.attrs(_id='my-span', test='test')
+
+print(span)
+
+# <span id="my-span" test="test">span</span>
 ```
 
 ### Custom Elements
