@@ -6,7 +6,7 @@ if [ $retVal -ne 0 ]; then
     exit $retVal
 fi
 
-python -m mypy --ignore-missing-imports hype/
+python -m mypy hype/ --disallow-untyped-defs
 retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Python Type Checking Error"
