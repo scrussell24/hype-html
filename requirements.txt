@@ -5,3 +5,7 @@ pycodestyle==2.10.0
 mypy==1.2.0
 black==23.3.0
 tox==4.5.1
+
+# packaging
+twine==3.4.1
+wheel
