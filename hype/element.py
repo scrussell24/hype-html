@@ -21,7 +21,7 @@
 # Documentation available at https://github.com/scrussell24/hype-html
 
 import enum
-from typing import Any, Tuple, Union, Optional
+from typing import Any, Optional, Tuple, Union
 
 
 class Indent(enum.Enum):
@@ -70,9 +70,7 @@ class Element:
             key, val = self._process_attr(k, v)
             self.props[key] = val
 
-    def __call__(
-        self, indent_level: int = 0, indent: Indent = Indent.TWO_SPACES
-    ) -> str:
+    def render(self, indent_level: int = 0, indent: Indent = Indent.TWO_SPACES) -> str:
         # props
         props = [
             self._create_attr_string(k, v)
@@ -94,7 +92,7 @@ class Element:
         els = []
         for a in self.inner_elements:
             if isinstance(a, Element):
-                els.append(a(indent_level=indent_level + 1, indent=indent))
+                els.append(a.render(indent_level=indent_level + 1, indent=indent))
             else:
                 els.append(str(a))
 
@@ -106,7 +104,7 @@ class Element:
         )
 
     def __str__(self) -> str:
-        return self()
+        return self.render()
 
 
 class SelfClosingElement(Element):
@@ -127,7 +125,7 @@ class Doc:
         doc = "<!DOCTYPE html>"
         for el in self.elements:
             if isinstance(el, Element):
-                doc += el(indent=self.indent)
+                doc += el.render(indent=self.indent)
             else:
                 doc += str(el)
         return doc
@@ -5934,3 +5932,4 @@ class Wbr(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
+

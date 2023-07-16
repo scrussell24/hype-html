@@ -10,7 +10,7 @@ Install via pip
 pip install hype-html
 ```
 
-Alteratively, in the spirit of removing dependencies, you could simply copy/paste the hype/element.py file into your project.
+Alternatively, in the spirit of removing dependencies, you could simply copy/paste the hype/element.py file into your project.
 
 ## Usage
 
@@ -53,7 +53,7 @@ print(body)
 # </body>
 ```
 
-Append to an elementes list of inner html elements.
+Append to an elements' list of inner html elements.
 
 ```
 body = Body(
