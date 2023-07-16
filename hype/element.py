@@ -5932,4 +5932,3 @@ class Wbr(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
-
