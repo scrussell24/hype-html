@@ -21,7 +21,7 @@
 # Documentation available at https://github.com/scrussell24/hype-html
 
 import enum
-from collections.abc import Awaitable
+import inspect
 from typing import Any, Optional, Tuple, Union
 
 
@@ -84,7 +84,7 @@ class Element:
         prop_space = " " if len(props) else ""
 
         # indent
-        indent_chars = "\n" + "".join([indent.value for n in range(indent_level)])
+        indent_chars = "\n" + "".join([indent.value for _ in range(indent_level)])
         end_tag_indent = (
             indent_chars
             if any([True for el in self.inner_elements if isinstance(el, Element)])
@@ -96,8 +96,8 @@ class Element:
         for a in self.inner_elements:
             if isinstance(a, Element):
                 els.append(await a.render(indent_level=indent_level + 1, indent=indent))
-            elif isinstance(a, Awaitable):
-                els.append(str(await a))
+            elif inspect.iscoroutinefunction(a):
+                els.append(str(await a()))
             else:
                 els.append(str(a))
 
