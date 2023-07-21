@@ -60,7 +60,7 @@ def test_custom_self_closing_tag():
 
 def test_other_indent():
     assert (
-        Div(H1("Hello World"))(indent=Indent.TAB)
+        Div(H1("Hello World")).render(indent=Indent.TAB)
         == "\n<div>\n\t<h1>Hello World</h1>\n</div>"
     )
     assert (
