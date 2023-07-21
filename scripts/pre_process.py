@@ -21,6 +21,22 @@ def generate():
     with open("hype/__init__.py", "w") as f:
         f.write(code)
 
+    # asyncio
+
+    with open("templates/element_asyncio.py.j2", "r") as f:
+        template = f.read()
+    tmp = Template(template)
+    code = tmp.render(tags=tags)
+    with open("hype/asyncio/element.py", "w") as f:
+        f.write(code)
+
+    with open("templates/__init_asyncio__.py.j2", "r") as f:
+        template = f.read()
+    tmp = Template(template)
+    code = tmp.render(tags=tags)
+    with open("hype/asyncio/__init__.py", "w") as f:
+        f.write(code)
+
 
 if __name__ == "__main__":
     generate()

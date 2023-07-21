@@ -1,0 +1,6 @@
+from hype.asyncio.element import Element
+from hype.asyncio.element import SelfClosingElement
+from hype.asyncio.element import Doc
+from hype.asyncio.element import Indent
+{% for tag, data in tags.items() %}from hype.asyncio.element import {{ tag.capitalize() }}
+{% endfor %}

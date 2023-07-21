@@ -27,10 +27,10 @@ print(doc)
 # <div>Hello World!</div>
 ```
 
-Elements can also be rendered by calling.
+Elements can also be rendered by calling their render method.
 
 ```
-doc() == str(doc)
+doc.render() == str(doc)
 ```
 ### Inner HTML
 
@@ -158,6 +158,29 @@ print(div(indent=Indent.FOUR_SPACES))
 # <div>
 #    <h1>Header</h1>
 # </div>
+```
+
+### Async Elements
+
+If your elements content's use coroutines you can use the async elements in hype.asyncio.
+
+The API is nearly identical with two main differences. Of course, the render method is a coroutine. Because of they do not render when calling the str function on them You must explicitly call their render method instead.
+
+```
+import ayncio
+
+from hype.asyncio import *
+
+
+div = Div(H1('Header'))
+
+result = asyncio.run(div.render)
+print(result)
+
+# <div>
+#    <h1>Header</h1>
+# </div>
+
 ```
 
 <!-- ## Development
