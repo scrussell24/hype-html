@@ -35,6 +35,17 @@ async def test_nested_elements():
 
 
 @pytest.mark.asyncio
+async def test_nested_awaitable():
+    async def hello():
+        return await H1("Hello World").render()
+
+    assert (
+        await Div(hello).render()
+        == "\n<div>\n<h1>Hello World</h1></div>"
+    )
+
+
+@pytest.mark.asyncio
 async def test_attribute():
     assert await Div("test", width=10).render() == '\n<div width="10">test</div>'
 
