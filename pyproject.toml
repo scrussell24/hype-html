@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "hype-html"
+version = "2.0.0"
+description = "A minimal python dsl for generating html."
+authors = ["Scott Russell <me@scottrussell.net>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "hype_html"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+
+[tool.poetry.group.dev.dependencies]
+jinja2 = "^3.1.2"
+pytest-cov = "^4.1.0"
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.1"
+mypy = "^1.4.1"
+black = "23.3.0"
+tox = "^4.6.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
