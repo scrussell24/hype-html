@@ -1,11 +1,14 @@
 [tool.poetry]
 name = "hype-html"
-version = "2.0.1"
+version = "2.0.2"
 description = "A minimal python dsl for generating html."
 authors = ["Scott Russell <me@scottrussell.net>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "hype"}]
+packages = [
+    {include = "hype"},
+    {include = "hype/py.typed"},
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
