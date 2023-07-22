@@ -8,7 +8,6 @@ readme = "README.md"
 packages = [
     {include = "hype"},
     {include = "hype/py.typed"},
-    {include = "hype/asyncio/py.typed"}
 ]
 
 [tool.poetry.dependencies]
