@@ -38,7 +38,7 @@ class Element:
     def tag(self) -> str:
         raise RuntimeError("Element requires tag property to render.")
 
-    def __init__(self, *args: Union[str, "Element"], **kwargs: Optional[str]):
+    def __init__(self, *args: Any, **kwargs: Optional[str]):
         if self.self_closing and len(args):
             raise RuntimeError("Self closing elements cannot have inner elements.")
 
