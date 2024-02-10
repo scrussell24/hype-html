@@ -37,12 +37,9 @@ async def test_nested_elements():
 @pytest.mark.asyncio
 async def test_nested_awaitable():
     async def hello():
-        return await H1("Hello World").render()
+        return "Hello World"
 
-    assert (
-        await Div(hello).render()
-        == "\n<div>\n<h1>Hello World</h1></div>"
-    )
+    assert await Div(hello).render() == "\n<div>Hello World</div>"
 
 
 @pytest.mark.asyncio
@@ -124,3 +121,9 @@ async def test_add_attribute():
     div = Div("content")
     div.attrs(test="test")
     assert await div.render() == '\n<div test="test">content</div>'
+
+
+@pytest.mark.asyncio
+async def test_escape_html():
+    div = Div("<h1>content</h1>")
+    assert await div.render() == "\n<div>&lt;h1&gt;content&lt;/h1&gt;</div>"

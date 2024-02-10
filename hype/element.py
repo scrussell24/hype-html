@@ -21,6 +21,7 @@
 # Documentation available at https://github.com/scrussell24/hype-html
 
 import enum
+import html
 from typing import Any, Optional, Tuple, Union
 
 
@@ -94,7 +95,7 @@ class Element:
             if isinstance(a, Element):
                 els.append(a.render(indent_level=indent_level + 1, indent=indent))
             else:
-                els.append(str(a))
+                els.append(html.escape(str(a)))
 
         if self.self_closing:
             return f'{indent_chars}<{self.tag}{prop_space}{" ".join([p for p in props if p])}/>'

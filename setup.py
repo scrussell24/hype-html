@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/scrussell24/hype-html",
     packages=setuptools.find_packages(),
-    package_data={'hype': ['py.typed']},
+    package_data={"hype": ["py.typed"]},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
