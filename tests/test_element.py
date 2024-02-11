@@ -94,3 +94,8 @@ def test_add_attribute():
 def test_escape_html():
     div = Div("<h1>content</h1>")
     assert str(div) == "\n<div>&lt;h1&gt;content&lt;/h1&gt;</div>"
+
+
+def test_escape_html():
+    div = Div("<h1>content</h1>", safe=True)
+    assert str(div) == "\n<div><h1>content</h1></div>"

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hype-html"
-version = "2.1.1"
+version = "2.1.2"
 description = "A minimal python dsl for generating html."
 authors = ["Scott Russell <me@scottrussell.net>"]
 license = "MIT"

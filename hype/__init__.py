@@ -1,123 +1,121 @@
-from hype.element import (
-    H1,
-    H2,
-    H3,
-    H4,
-    H5,
-    H6,
-    A,
-    Abbr,
-    Address,
-    Area,
-    Article,
-    Aside,
-    Audio,
-    B,
-    Base,
-    Bdi,
-    Bdo,
-    Blockquote,
-    Body,
-    Br,
-    Button,
-    Canvas,
-    Caption,
-    Cite,
-    Code,
-    Col,
-    Colgroup,
-    Data,
-    Datalist,
-    Dd,
-    Del,
-    Details,
-    Dfn,
-    Dialog,
-    Div,
-    Dl,
-    Doc,
-    Dt,
-    Element,
-    Em,
-    Embed,
-    Fieldset,
-    Figcaption,
-    Figure,
-    Footer,
-    Form,
-    Head,
-    Header,
-    Hgroup,
-    Hr,
-    Html,
-    I,
-    Iframe,
-    Img,
-    Indent,
-    Input,
-    Ins,
-    Kbd,
-    Label,
-    Legend,
-    Li,
-    Link,
-    Main,
-    Map,
-    Mark,
-    Math,
-    Menu,
-    Menuitem,
-    Meta,
-    Meter,
-    Nav,
-    Noscript,
-    Object,
-    Ol,
-    Optgroup,
-    Option,
-    Output,
-    P,
-    Param,
-    Picture,
-    Pre,
-    Progress,
-    Q,
-    Rb,
-    Rp,
-    Rt,
-    Rtc,
-    Ruby,
-    S,
-    Samp,
-    Script,
-    Section,
-    Select,
-    SelfClosingElement,
-    Slot,
-    Small,
-    Source,
-    Span,
-    Strong,
-    Style,
-    Sub,
-    Summary,
-    Sup,
-    Svg,
-    Table,
-    Tbody,
-    Td,
-    Template,
-    Textarea,
-    Tfoot,
-    Th,
-    Thead,
-    Time,
-    Title,
-    Tr,
-    Track,
-    U,
-    Ul,
-    Var,
-    Video,
-    Wbr,
-)
+from hype.element import Element
+from hype.element import SelfClosingElement
+from hype.element import Doc
+from hype.element import Indent
+from hype.element import A
+from hype.element import Abbr
+from hype.element import Address
+from hype.element import Area
+from hype.element import Article
+from hype.element import Aside
+from hype.element import Audio
+from hype.element import B
+from hype.element import Base
+from hype.element import Bdi
+from hype.element import Bdo
+from hype.element import Blockquote
+from hype.element import Body
+from hype.element import Br
+from hype.element import Button
+from hype.element import Canvas
+from hype.element import Caption
+from hype.element import Cite
+from hype.element import Code
+from hype.element import Col
+from hype.element import Colgroup
+from hype.element import Data
+from hype.element import Datalist
+from hype.element import Dd
+from hype.element import Del
+from hype.element import Details
+from hype.element import Dfn
+from hype.element import Dialog
+from hype.element import Div
+from hype.element import Dl
+from hype.element import Dt
+from hype.element import Em
+from hype.element import Embed
+from hype.element import Fieldset
+from hype.element import Figcaption
+from hype.element import Figure
+from hype.element import Footer
+from hype.element import Form
+from hype.element import H1
+from hype.element import H2
+from hype.element import H3
+from hype.element import H4
+from hype.element import H5
+from hype.element import H6
+from hype.element import Head
+from hype.element import Header
+from hype.element import Hgroup
+from hype.element import Hr
+from hype.element import Html
+from hype.element import I
+from hype.element import Iframe
+from hype.element import Img
+from hype.element import Input
+from hype.element import Ins
+from hype.element import Kbd
+from hype.element import Label
+from hype.element import Legend
+from hype.element import Li
+from hype.element import Link
+from hype.element import Main
+from hype.element import Map
+from hype.element import Mark
+from hype.element import Math
+from hype.element import Menu
+from hype.element import Menuitem
+from hype.element import Meta
+from hype.element import Meter
+from hype.element import Nav
+from hype.element import Noscript
+from hype.element import Object
+from hype.element import Ol
+from hype.element import Optgroup
+from hype.element import Option
+from hype.element import Output
+from hype.element import P
+from hype.element import Param
+from hype.element import Picture
+from hype.element import Pre
+from hype.element import Progress
+from hype.element import Q
+from hype.element import Rb
+from hype.element import Rp
+from hype.element import Rt
+from hype.element import Rtc
+from hype.element import Ruby
+from hype.element import S
+from hype.element import Samp
+from hype.element import Script
+from hype.element import Section
+from hype.element import Select
+from hype.element import Slot
+from hype.element import Small
+from hype.element import Source
+from hype.element import Span
+from hype.element import Strong
+from hype.element import Style
+from hype.element import Sub
+from hype.element import Summary
+from hype.element import Sup
+from hype.element import Svg
+from hype.element import Table
+from hype.element import Tbody
+from hype.element import Td
+from hype.element import Template
+from hype.element import Textarea
+from hype.element import Tfoot
+from hype.element import Th
+from hype.element import Thead
+from hype.element import Time
+from hype.element import Title
+from hype.element import Tr
+from hype.element import Track
+from hype.element import U
+from hype.element import Ul
+from hype.element import Var
+from hype.element import Video
+from hype.element import Wbr

@@ -127,3 +127,8 @@ async def test_add_attribute():
 async def test_escape_html():
     div = Div("<h1>content</h1>")
     assert await div.render() == "\n<div>&lt;h1&gt;content&lt;/h1&gt;</div>"
+
+@pytest.mark.asyncio
+async def test_do_not_escape():
+    div = Div("<h1>content</h1>", safe=True)
+    assert await div.render() == "\n<div><h1>content</h1></div>"

@@ -39,7 +39,8 @@ class Element:
     def tag(self) -> str:
         raise RuntimeError("Element requires tag property to render.")
 
-    def __init__(self, *args: Any, **kwargs: Optional[str]):
+    def __init__(self, *args: Union[str, "Element"], safe: bool = False, **kwargs: Optional[str]):
+        self.safe = safe
         if self.self_closing and len(args):
             raise RuntimeError("Self closing elements cannot have inner elements.")
 
@@ -72,6 +73,11 @@ class Element:
             key, val = self._process_attr(k, v)
             self.props[key] = val
 
+    def escape(self, s: str) -> str:
+        if self.safe:
+            return s
+        return html.escape(s)
+
     async def render(
         self, indent_level: int = 0, indent: Indent = Indent.TWO_SPACES
     ) -> str:
@@ -98,9 +104,9 @@ class Element:
             if isinstance(a, Element):
                 els.append(await a.render(indent_level=indent_level + 1, indent=indent))
             elif inspect.iscoroutinefunction(a):
-                els.append(html.escape(str(await a())))
+                els.append(self.escape(str(await a())))
             else:
-                els.append(html.escape(str(a)))
+                els.append(self.escape(str(a)))
 
         if self.self_closing:
             return f'{indent_chars}<{self.tag}{prop_space}{" ".join([p for p in props if p])}/>'
@@ -114,7 +120,7 @@ class SelfClosingElement(Element):
     self_closing = True
 
     def __init__(self, **kwargs: Optional[str]):
-        super().__init__(**kwargs)
+        super().__init__(safe=False, **kwargs)
 
 
 class Doc:
@@ -130,7 +136,7 @@ class Doc:
             if isinstance(el, Element):
                 doc += await el.render(indent=self.indent)
             else:
-                doc += html.escape(str(el))
+                doc += str(el)
         return doc
 
 
@@ -143,6 +149,7 @@ class A(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -195,7 +202,7 @@ class A(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Abbr(Element):
@@ -204,6 +211,7 @@ class Abbr(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -240,7 +248,7 @@ class Abbr(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Address(Element):
@@ -249,6 +257,7 @@ class Address(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -285,7 +294,7 @@ class Address(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Area(SelfClosingElement):
@@ -294,6 +303,7 @@ class Area(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         alt: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -359,6 +369,7 @@ class Article(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -395,7 +406,7 @@ class Article(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Aside(Element):
@@ -404,6 +415,7 @@ class Aside(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -440,7 +452,7 @@ class Aside(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Audio(Element):
@@ -449,6 +461,7 @@ class Audio(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         autoplay: Optional[str] = None,
@@ -501,7 +514,7 @@ class Audio(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class B(Element):
@@ -510,6 +523,7 @@ class B(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -546,7 +560,7 @@ class B(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Base(SelfClosingElement):
@@ -555,6 +569,7 @@ class Base(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -604,6 +619,7 @@ class Bdi(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -640,7 +656,7 @@ class Bdi(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Bdo(Element):
@@ -649,6 +665,7 @@ class Bdo(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -685,7 +702,7 @@ class Bdo(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Blockquote(Element):
@@ -694,6 +711,7 @@ class Blockquote(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         cite: Optional[str] = None,
@@ -732,7 +750,7 @@ class Blockquote(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Body(Element):
@@ -741,6 +759,7 @@ class Body(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         background: Optional[str] = None,
@@ -781,7 +800,7 @@ class Body(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Br(SelfClosingElement):
@@ -790,6 +809,7 @@ class Br(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -835,6 +855,7 @@ class Button(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         autofocus: Optional[str] = None,
@@ -893,7 +914,7 @@ class Button(Element):
             "type": type,
             "value": value,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Canvas(Element):
@@ -902,6 +923,7 @@ class Canvas(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -942,7 +964,7 @@ class Canvas(Element):
             "translate": translate,
             "width": width,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Caption(Element):
@@ -951,6 +973,7 @@ class Caption(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -989,7 +1012,7 @@ class Caption(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Cite(Element):
@@ -998,6 +1021,7 @@ class Cite(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1034,7 +1058,7 @@ class Cite(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Code(Element):
@@ -1043,6 +1067,7 @@ class Code(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1079,7 +1104,7 @@ class Code(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Col(SelfClosingElement):
@@ -1088,6 +1113,7 @@ class Col(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -1139,6 +1165,7 @@ class Colgroup(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -1181,7 +1208,7 @@ class Colgroup(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Data(Element):
@@ -1190,6 +1217,7 @@ class Data(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1228,7 +1256,7 @@ class Data(Element):
             "translate": translate,
             "value": value,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Datalist(Element):
@@ -1237,6 +1265,7 @@ class Datalist(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1273,7 +1302,7 @@ class Datalist(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Dd(Element):
@@ -1282,6 +1311,7 @@ class Dd(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1318,7 +1348,7 @@ class Dd(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Del(Element):
@@ -1327,6 +1357,7 @@ class Del(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         cite: Optional[str] = None,
@@ -1367,7 +1398,7 @@ class Del(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Details(Element):
@@ -1376,6 +1407,7 @@ class Details(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1414,7 +1446,7 @@ class Details(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Dfn(Element):
@@ -1423,6 +1455,7 @@ class Dfn(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1459,7 +1492,7 @@ class Dfn(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Dialog(Element):
@@ -1468,6 +1501,7 @@ class Dialog(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1504,7 +1538,7 @@ class Dialog(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Div(Element):
@@ -1513,6 +1547,7 @@ class Div(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1549,7 +1584,7 @@ class Div(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Dl(Element):
@@ -1558,6 +1593,7 @@ class Dl(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1594,7 +1630,7 @@ class Dl(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Dt(Element):
@@ -1603,6 +1639,7 @@ class Dt(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1639,7 +1676,7 @@ class Dt(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Em(Element):
@@ -1648,6 +1685,7 @@ class Em(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1684,7 +1722,7 @@ class Em(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Embed(SelfClosingElement):
@@ -1693,6 +1731,7 @@ class Embed(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1746,6 +1785,7 @@ class Fieldset(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1788,7 +1828,7 @@ class Fieldset(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Figcaption(Element):
@@ -1797,6 +1837,7 @@ class Figcaption(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1833,7 +1874,7 @@ class Figcaption(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Figure(Element):
@@ -1842,6 +1883,7 @@ class Figure(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1878,7 +1920,7 @@ class Figure(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Footer(Element):
@@ -1887,6 +1929,7 @@ class Footer(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -1923,7 +1966,7 @@ class Footer(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Form(Element):
@@ -1932,6 +1975,7 @@ class Form(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accept: Optional[str] = None,
         accept_charset: Optional[str] = None,
         accesskey: Optional[str] = None,
@@ -1988,7 +2032,7 @@ class Form(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class H1(Element):
@@ -1997,6 +2041,7 @@ class H1(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2033,7 +2078,7 @@ class H1(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class H2(Element):
@@ -2042,6 +2087,7 @@ class H2(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2078,7 +2124,7 @@ class H2(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class H3(Element):
@@ -2087,6 +2133,7 @@ class H3(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2123,7 +2170,7 @@ class H3(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class H4(Element):
@@ -2132,6 +2179,7 @@ class H4(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2168,7 +2216,7 @@ class H4(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class H5(Element):
@@ -2177,6 +2225,7 @@ class H5(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2213,7 +2262,7 @@ class H5(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class H6(Element):
@@ -2222,6 +2271,7 @@ class H6(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2258,7 +2308,7 @@ class H6(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Head(Element):
@@ -2267,6 +2317,7 @@ class Head(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2303,7 +2354,7 @@ class Head(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Header(Element):
@@ -2312,6 +2363,7 @@ class Header(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2348,7 +2400,7 @@ class Header(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Hgroup(Element):
@@ -2357,6 +2409,7 @@ class Hgroup(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2393,7 +2446,7 @@ class Hgroup(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Hr(SelfClosingElement):
@@ -2402,6 +2455,7 @@ class Hr(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -2451,6 +2505,7 @@ class Html(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2489,7 +2544,7 @@ class Html(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class I(Element):
@@ -2498,6 +2553,7 @@ class I(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2534,7 +2590,7 @@ class I(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Iframe(Element):
@@ -2543,6 +2599,7 @@ class Iframe(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         allow: Optional[str] = None,
@@ -2603,7 +2660,7 @@ class Iframe(Element):
             "translate": translate,
             "width": width,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Img(SelfClosingElement):
@@ -2612,6 +2669,7 @@ class Img(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         alt: Optional[str] = None,
@@ -2689,6 +2747,7 @@ class Input(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accept: Optional[str] = None,
         accesskey: Optional[str] = None,
         alt: Optional[str] = None,
@@ -2798,6 +2857,7 @@ class Ins(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         cite: Optional[str] = None,
@@ -2838,7 +2898,7 @@ class Ins(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Kbd(Element):
@@ -2847,6 +2907,7 @@ class Kbd(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2883,7 +2944,7 @@ class Kbd(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Label(Element):
@@ -2892,6 +2953,7 @@ class Label(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2932,7 +2994,7 @@ class Label(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Legend(Element):
@@ -2941,6 +3003,7 @@ class Legend(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -2977,7 +3040,7 @@ class Legend(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Li(Element):
@@ -2986,6 +3049,7 @@ class Li(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3024,7 +3088,7 @@ class Li(Element):
             "translate": translate,
             "value": value,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Link(SelfClosingElement):
@@ -3033,6 +3097,7 @@ class Link(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3094,6 +3159,7 @@ class Main(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3130,7 +3196,7 @@ class Main(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Map(Element):
@@ -3139,6 +3205,7 @@ class Map(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3177,7 +3244,7 @@ class Map(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Mark(Element):
@@ -3186,6 +3253,7 @@ class Mark(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3222,7 +3290,7 @@ class Mark(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Math(Element):
@@ -3231,6 +3299,7 @@ class Math(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3267,7 +3336,7 @@ class Math(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Menu(Element):
@@ -3276,6 +3345,7 @@ class Menu(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3314,7 +3384,7 @@ class Menu(Element):
             "translate": translate,
             "type": type,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Menuitem(SelfClosingElement):
@@ -3323,6 +3393,7 @@ class Menuitem(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3368,6 +3439,7 @@ class Meta(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         charset: Optional[str] = None,
@@ -3421,6 +3493,7 @@ class Meter(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3471,7 +3544,7 @@ class Meter(Element):
             "translate": translate,
             "value": value,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Nav(Element):
@@ -3480,6 +3553,7 @@ class Nav(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3516,7 +3590,7 @@ class Nav(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Noscript(Element):
@@ -3525,6 +3599,7 @@ class Noscript(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3561,7 +3636,7 @@ class Noscript(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Object(Element):
@@ -3570,6 +3645,7 @@ class Object(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         border: Optional[str] = None,
@@ -3622,7 +3698,7 @@ class Object(Element):
             "usemap": usemap,
             "width": width,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Ol(Element):
@@ -3631,6 +3707,7 @@ class Ol(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3671,7 +3748,7 @@ class Ol(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Optgroup(Element):
@@ -3680,6 +3757,7 @@ class Optgroup(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3720,7 +3798,7 @@ class Optgroup(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Option(Element):
@@ -3729,6 +3807,7 @@ class Option(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3773,7 +3852,7 @@ class Option(Element):
             "translate": translate,
             "value": value,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Output(Element):
@@ -3782,6 +3861,7 @@ class Output(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3824,7 +3904,7 @@ class Output(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class P(Element):
@@ -3833,6 +3913,7 @@ class P(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3869,7 +3950,7 @@ class P(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Param(SelfClosingElement):
@@ -3878,6 +3959,7 @@ class Param(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3927,6 +4009,7 @@ class Picture(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -3963,7 +4046,7 @@ class Picture(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Pre(Element):
@@ -3972,6 +4055,7 @@ class Pre(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4008,7 +4092,7 @@ class Pre(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Progress(Element):
@@ -4017,6 +4101,7 @@ class Progress(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4059,7 +4144,7 @@ class Progress(Element):
             "translate": translate,
             "value": value,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Q(Element):
@@ -4068,6 +4153,7 @@ class Q(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         cite: Optional[str] = None,
@@ -4106,7 +4192,7 @@ class Q(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Rb(Element):
@@ -4115,6 +4201,7 @@ class Rb(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4151,7 +4238,7 @@ class Rb(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Rp(Element):
@@ -4160,6 +4247,7 @@ class Rp(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4196,7 +4284,7 @@ class Rp(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Rt(Element):
@@ -4205,6 +4293,7 @@ class Rt(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4241,7 +4330,7 @@ class Rt(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Rtc(Element):
@@ -4250,6 +4339,7 @@ class Rtc(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4286,7 +4376,7 @@ class Rtc(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Ruby(Element):
@@ -4295,6 +4385,7 @@ class Ruby(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4331,7 +4422,7 @@ class Ruby(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class S(Element):
@@ -4340,6 +4431,7 @@ class S(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4376,7 +4468,7 @@ class S(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Samp(Element):
@@ -4385,6 +4477,7 @@ class Samp(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4421,7 +4514,7 @@ class Samp(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Script(Element):
@@ -4430,6 +4523,7 @@ class Script(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         _async: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -4486,7 +4580,7 @@ class Script(Element):
             "translate": translate,
             "type": type,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Section(Element):
@@ -4495,6 +4589,7 @@ class Section(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4531,7 +4626,7 @@ class Section(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Select(Element):
@@ -4540,6 +4635,7 @@ class Select(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         autocomplete: Optional[str] = None,
@@ -4592,7 +4688,7 @@ class Select(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Slot(Element):
@@ -4601,6 +4697,7 @@ class Slot(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4637,7 +4734,7 @@ class Slot(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Small(Element):
@@ -4646,6 +4743,7 @@ class Small(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4682,7 +4780,7 @@ class Small(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Source(SelfClosingElement):
@@ -4691,6 +4789,7 @@ class Source(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4744,6 +4843,7 @@ class Span(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4780,7 +4880,7 @@ class Span(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Strong(Element):
@@ -4789,6 +4889,7 @@ class Strong(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4825,7 +4926,7 @@ class Strong(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Style(Element):
@@ -4834,6 +4935,7 @@ class Style(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4874,7 +4976,7 @@ class Style(Element):
             "translate": translate,
             "type": type,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Sub(Element):
@@ -4883,6 +4985,7 @@ class Sub(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4919,7 +5022,7 @@ class Sub(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Summary(Element):
@@ -4928,6 +5031,7 @@ class Summary(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -4964,7 +5068,7 @@ class Summary(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Sup(Element):
@@ -4973,6 +5077,7 @@ class Sup(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5009,7 +5114,7 @@ class Sup(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Svg(Element):
@@ -5018,6 +5123,7 @@ class Svg(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5054,7 +5160,7 @@ class Svg(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Table(Element):
@@ -5063,6 +5169,7 @@ class Table(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -5109,7 +5216,7 @@ class Table(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Tbody(Element):
@@ -5118,6 +5225,7 @@ class Tbody(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -5158,7 +5266,7 @@ class Tbody(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Td(Element):
@@ -5167,6 +5275,7 @@ class Td(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -5215,7 +5324,7 @@ class Td(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Template(Element):
@@ -5224,6 +5333,7 @@ class Template(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5260,7 +5370,7 @@ class Template(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Textarea(Element):
@@ -5269,6 +5379,7 @@ class Textarea(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         autocomplete: Optional[str] = None,
@@ -5335,7 +5446,7 @@ class Textarea(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Tfoot(Element):
@@ -5344,6 +5455,7 @@ class Tfoot(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -5384,7 +5496,7 @@ class Tfoot(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Th(Element):
@@ -5393,6 +5505,7 @@ class Th(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -5443,7 +5556,7 @@ class Th(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Thead(Element):
@@ -5452,6 +5565,7 @@ class Thead(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -5490,7 +5604,7 @@ class Thead(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Time(Element):
@@ -5499,6 +5613,7 @@ class Time(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5537,7 +5652,7 @@ class Time(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Title(Element):
@@ -5546,6 +5661,7 @@ class Title(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5582,7 +5698,7 @@ class Title(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Tr(Element):
@@ -5591,6 +5707,7 @@ class Tr(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         align: Optional[str] = None,
         autocapitalize: Optional[str] = None,
@@ -5631,7 +5748,7 @@ class Tr(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Track(SelfClosingElement):
@@ -5640,6 +5757,7 @@ class Track(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5695,6 +5813,7 @@ class U(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5731,7 +5850,7 @@ class U(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Ul(Element):
@@ -5740,6 +5859,7 @@ class Ul(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5776,7 +5896,7 @@ class Ul(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Var(Element):
@@ -5785,6 +5905,7 @@ class Var(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5821,7 +5942,7 @@ class Var(Element):
             "title": title,
             "translate": translate,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Video(Element):
@@ -5830,6 +5951,7 @@ class Video(Element):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         autoplay: Optional[str] = None,
@@ -5886,7 +6008,7 @@ class Video(Element):
             "translate": translate,
             "width": width,
         }
-        super().__init__(*args, **{**props, **kwargs})
+        super().__init__(*args, safe=safe, **{**props, **kwargs})
 
 
 class Wbr(SelfClosingElement):
@@ -5895,6 +6017,7 @@ class Wbr(SelfClosingElement):
     def __init__(
         self,
         *args: Union[str, Element],
+        safe: bool = False,
         accesskey: Optional[str] = None,
         autocapitalize: Optional[str] = None,
         _class: Optional[str] = None,
@@ -5932,3 +6055,4 @@ class Wbr(SelfClosingElement):
             "translate": translate,
         }
         super().__init__(**{**props, **kwargs})
+
